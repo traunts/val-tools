@@ -1,0 +1,19 @@
+<mat-card>
+    <mat-card-header>Upload Log File</mat-card-header>
+    <mat-card-content>
+        <div class="file-upload-container">
+            <input type="file" id="file-upload" (change)="onFileSelected($event)" hidden />
+            <label for="file-upload" class="file-upload-label cursor-pointer">
+                <span class="file-upload-icon">📁</span>
+                <span class="file-upload-text">Choose File</span>
+            </label>
+            @if (fileName) {
+            <span class="file-upload-filename">{{ fileName }}</span>
+            }
+        </div>
+    </mat-card-content>
+</mat-card>
+<!-- <input type="file" id="file-upload" (onchange)="onFileSelected($event)" />
+<label for="file-upload" class="file-upload-label">
+    <span class="file-upload-icon">📁</span>
+    <span class="file-upload-text">Upload Log File</span> -->

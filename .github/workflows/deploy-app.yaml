@@ -16,6 +16,11 @@ jobs:
           fetch-depth: 0 # Fetch all history for all branches and tags
           persist-credentials: true # Disable automatic token authentication
 
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+        name: Set Git user
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:

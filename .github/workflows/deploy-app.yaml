@@ -12,6 +12,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for all branches and tags
+          persist-credentials: true # Disable automatic token authentication
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -23,6 +26,6 @@ jobs:
 
       - name: Deploy with ng deploy
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          # GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: npx ng deploy --base-href="./"

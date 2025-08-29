@@ -1,1 +1,28 @@
-ng a
+name: Deploy Angular App
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Deploy with ng deploy
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: npx ng deploy --base-href="./"
+        

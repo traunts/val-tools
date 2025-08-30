@@ -19,4 +19,13 @@ export class PlayerListService {
       this.playerList.set([...players]);
     }
   }
+
+  setAllPlayersToState(enabledState: boolean): void {
+    const players = this.playerList().map((p) => {
+      p.enabled = enabledState;
+      return p;
+    });
+
+    this.playerList.set(players);
+  }
 }

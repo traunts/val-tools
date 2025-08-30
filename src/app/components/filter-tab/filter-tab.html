@@ -4,17 +4,30 @@
         <div class="flex flex-row h-full w-full gap-2">
             <mat-card class="flex-1 h-full">
                 <mat-card-content class="h-full flex overflow-hidden">
-                    Disabled
+                    <mat-card-header class="flex flex-col">
+                        <div>Disabled</div>
+                    </mat-card-header>
                     <app-player-list class=" flex h-full" [playerList]="disabledPlayers()"></app-player-list>
 
                 </mat-card-content>
+                <mat-card-actions align="end">
+                    <button matIconButton (click)="toggleAllPlayers(true)">
+                        <mat-icon>keyboard_tab</mat-icon>
+                    </button>
+                </mat-card-actions>
             </mat-card>
             <mat-card class="flex-1 h-full">
                 <mat-card-content class="h-full flex overflow-hidden">
-                    Enabled
+                    <mat-card-header class="flex flex-col">
+                        <div>Enabled</div>
+                    </mat-card-header>
                     <app-player-list class="flex h-full" [playerList]="enabledPlayers()"></app-player-list>
-
                 </mat-card-content>
+                <mat-card-actions align="start">
+                    <button matIconButton (click)="toggleAllPlayers(false)">
+                        <mat-icon class="rotate-180">keyboard_tab</mat-icon>
+                    </button>
+                </mat-card-actions>
             </mat-card>
         </div>
     </mat-card-content>

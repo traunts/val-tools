@@ -21,7 +21,7 @@ export class PlayerListComponent {
 
   togglePlayer(player: PlayerData) {
     console.log(`Toggling enabled for player ${player.name}`);
-    this.playerService.togglePlayerEnabled(player.id);
+    this.playerService.togglePlayerById(player.id);
   }
 
   private sortPlayerList(list: PlayerData[]): PlayerData[] {

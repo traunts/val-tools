@@ -1,5 +1,19 @@
 <mat-card class="flex h-full overflow-hidden">
-    <mat-card-header>Window</mat-card-header>
+    <mat-card-header>
+
+        <mat-form-field class="w-full">
+            <mat-label>Player Search</mat-label>
+            <input type="text" placeholder="Filter player names" matInput [formControl]="nameFilter"
+                [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" autoActiveFirstOption [displayWith]="displayPlayer"
+                (optionSelected)="toggleSelectedPlayerFromAutocomplete($event)">
+                @for (player of filteredPlayerList(); track player.id) {
+                <mat-option [value]="player">{{ player.name }}</mat-option>
+                }
+            </mat-autocomplete>
+        </mat-form-field>
+
+    </mat-card-header>
     <mat-card-content class="flex h-full overflow-hidden">
         <div class="flex flex-row h-full w-full gap-2">
             <mat-card class="flex-1 h-full">
@@ -7,7 +21,8 @@
                     <mat-card-header class="flex flex-col">
                         <div>Disabled</div>
                     </mat-card-header>
-                    <app-player-list class=" flex h-full" [playerList]="disabledPlayers()"></app-player-list>
+                    <app-player-list class=" flex h-full"
+                        [playerList]="playerService.disabledPlayers()"></app-player-list>
 
                 </mat-card-content>
                 <mat-card-actions align="end">
@@ -21,7 +36,8 @@
                     <mat-card-header class="flex flex-col">
                         <div>Enabled</div>
                     </mat-card-header>
-                    <app-player-list class="flex h-full" [playerList]="enabledPlayers()"></app-player-list>
+                    <app-player-list class="flex h-full"
+                        [playerList]="playerService.enabledPlayers()"></app-player-list>
                 </mat-card-content>
                 <mat-card-actions align="start">
                     <button matIconButton (click)="toggleAllPlayers(false)">

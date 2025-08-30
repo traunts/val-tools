@@ -46,7 +46,7 @@ export class FileUploadService {
       players.push({ name: playerMatch[1].trim(), id: playerMatch[2], enabled: false });
     }
 
-    this.playerService.playerList.set(players);
+    this.playerService.populatePlayers(players);
 
     // Extract all logs, send to log processing service
 

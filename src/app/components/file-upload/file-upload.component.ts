@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
 import { FileUploadService } from '../../services/file-upload/file-upload.service';
-import { MatIcon } from '@angular/material/icon';
 import { MatCard, MatCardContent, MatCardHeader } from '@angular/material/card';
 
 @Component({
@@ -11,7 +10,6 @@ import { MatCard, MatCardContent, MatCardHeader } from '@angular/material/card';
 })
 export class FileUploadComponent {
   private fileUploadService = inject(FileUploadService);
-  constructor() {}
 
   fileName = '';
 

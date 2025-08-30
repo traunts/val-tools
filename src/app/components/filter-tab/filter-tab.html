@@ -1,0 +1,21 @@
+<mat-card class="flex h-full overflow-hidden">
+    <mat-card-header>Window</mat-card-header>
+    <mat-card-content class="flex h-full overflow-hidden">
+        <div class="flex flex-row h-full w-full gap-2">
+            <mat-card class="flex-1 h-full">
+                <mat-card-content class="h-full flex overflow-hidden">
+                    Disabled
+                    <app-player-list class=" flex h-full" [playerList]="disabledPlayers()"></app-player-list>
+
+                </mat-card-content>
+            </mat-card>
+            <mat-card class="flex-1 h-full">
+                <mat-card-content class="h-full flex overflow-hidden">
+                    Enabled
+                    <app-player-list class="flex h-full" [playerList]="enabledPlayers()"></app-player-list>
+
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </mat-card-content>
+</mat-card>

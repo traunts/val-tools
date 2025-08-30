@@ -1,37 +1,8 @@
-<mat-card class="flex h-full">
-    <mat-card-header>Window</mat-card-header>
-    <mat-card-content>
-        <div class="flex flex-row h-full w-full gap-2">
-            <mat-card class="flex-1 h-full">
-                <mat-card-content>
-                    Disabled
-
-                    <mat-list class="mat-mdc-chip-set-stacked">
-                        @for (player of disabledPlayers(); track player.id) {
-                        <mat-list-item>
-                            <app-list-entry [player]="player"></app-list-entry>
-
-                        </mat-list-item>
-                        }
-                    </mat-list>
-
-                </mat-card-content>
-            </mat-card>
-            <mat-card class="flex-1 h-full">
-                <mat-card-content>
-                    Enabled
-
-                    <mat-list class="mat-mdc-chip-set-stacked">
-                        @for (player of enabledPlayers(); track player.id) {
-                        <mat-list-item>
-                            <app-list-entry [player]="player"></app-list-entry>
-
-                        </mat-list-item>
-                        }
-                    </mat-list>
-
-                </mat-card-content>
-            </mat-card>
-        </div>
-    </mat-card-content>
-</mat-card>
+<mat-list class="mat-mdc-chip-set-stacked h-full w-full overflow-y-auto">
+    @for (player of playerList(); track player.id) {
+    <mat-list-item>
+        <button class="w-full" matButton="outlined" (click)="togglePlayer(player)">{{ player.name
+            }}</button>
+    </mat-list-item>
+    }
+</mat-list>

@@ -10,21 +10,29 @@ export class FileUploadService {
   private playerService = inject(PlayerListService);
   private dataService = inject(LogPlotService);
 
-  constructor() {}
+  fileContent: string | null = null;
 
   async parseLogFile(file: File): Promise<void> {
-    // Read file content
-    const fileContent = await file.text();
+    this.dataService.dataLoaded.set(false);
 
-    console.log('File content:', fileContent);
+    // Read file content
+    this.fileContent = await file.text();
+
+    console.log('File content:', this.fileContent);
 
     // Extract Headers: Date Range and Radius
     const headerRegex = /Date Range:\s*([0-9-]+)\s+to\s+([0-9-]+)\s*\nRadius:\s*([\d.]+)/;
-    const headerMatch = fileContent.match(headerRegex);
+    const headerMatch = this.fileContent.match(headerRegex);
     if (headerMatch) {
       console.log('Date Start:', headerMatch[1]);
       console.log('Date End:', headerMatch[2]);
       console.log('Radius:', headerMatch[3]);
+
+      this.dataService.dateRange.set({
+        lower: headerMatch[1],
+        upper: headerMatch[2],
+      });
+      this.dataService.radius.set(parseFloat(headerMatch[3]));
     }
     // Extract Player Names and Hashes, populate player list in service
 
@@ -32,7 +40,7 @@ export class FileUploadService {
 
     const players: PlayerData[] = [];
     let playerMatch;
-    while ((playerMatch = playerRegex.exec(fileContent)) !== null) {
+    while ((playerMatch = playerRegex.exec(this.fileContent)) !== null) {
       console.log('Player Name:', playerMatch[1].trim());
       console.log('Steam ID:', playerMatch[2]);
       players.push({ name: playerMatch[1].trim(), id: playerMatch[2], enabled: false });
@@ -44,10 +52,12 @@ export class FileUploadService {
 
     // const logRegex = /(\w+):\s*\[([-\d.,\s]+)\]\s*\(([\d-]+\s[\d:.]+)\)/g;
     // let logMatch;
-    // while ((logMatch = logRegex.exec(fileContent)) !== null) {
+    // while ((logMatch = logRegex.exec(this.fileContent)) !== null) {
     //   console.log('Player:', logMatch[1]);
     //   console.log('Coordinates:', logMatch[2].split(/\s*,\s*/).map(Number));
     //   console.log('Timestamp:', logMatch[3]);
     // }
+
+    this.dataService.dataLoaded.set(true);
   }
 }

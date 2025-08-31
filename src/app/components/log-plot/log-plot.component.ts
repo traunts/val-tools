@@ -1,17 +1,135 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, effect, ElementRef, inject, signal, ViewChild } from '@angular/core';
 import { MatCard, MatCardContent, MatCardHeader } from '@angular/material/card';
 import { LogPlotService } from '../../services/log-plot/log-plot.service';
 import { DatePipe } from '@angular/common';
-
+import Plotly, { PlotData } from 'plotly.js-dist-min';
+import { PlayerListService } from '../../services/player-list/player-list.service';
+import { MatButtonModule } from '@angular/material/button';
 @Component({
   selector: 'app-log-plot',
-  imports: [MatCard, MatCardContent, MatCardHeader, DatePipe],
+  imports: [MatCard, MatCardContent, MatCardHeader, DatePipe, MatButtonModule],
   templateUrl: './log-plot.component.html',
   styleUrl: './log-plot.component.scss',
 })
 export class LogPlotComponent {
   dataService = inject(LogPlotService);
+  playerService = inject(PlayerListService);
 
-  radius = this.dataService.radius;
+  plotReady = signal(false);
+
+  dataListener = effect(() => {
+    console.log('Data or parameters changed, regenerating plot if ready...');
+    if (this.dataService.dataLoaded() && this.radius() && this.dateRange()) {
+      this.generatePlot();
+    }
+  });
+
+  pointOfInterest = { x: 1369, y: 31, z: 1260 }; // Example coordinates
+
+  @ViewChild('plot', { static: true }) plotEl!: ElementRef;
+
+  radius = computed(() => this.dataService.radius);
   dateRange = computed(() => this.dataService.dateRange());
+
+  generatePlot(): void {
+    if (!this.dataService.dataLoaded()) {
+      console.warn('Data not loaded yet. Cannot generate plot.');
+      return;
+    }
+    const radius = this.radius()();
+    const dateRange = this.dateRange();
+
+    if (!radius) {
+      console.warn('Radius not set. Cannot generate plot.');
+      return;
+    }
+    if (!dateRange) {
+      console.warn('Date range not set. Cannot generate plot.');
+      return;
+    }
+
+    if (!this.plotEl) {
+      console.error('Plot element not found.');
+      return;
+    }
+
+    this.plotReady.set(false);
+
+    const plotData: Partial<PlotData>[] = [];
+
+    for (const [playerName, data] of Object.entries(this.dataService.positionTraces())) {
+      if (
+        this.playerService.disabledPlayers().length > 0 &&
+        this.playerService.disabledPlayers().some((playerData) => playerData.name === playerName)
+      ) {
+        continue;
+      }
+      const sortedPositionData = data.sort(
+        (a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+      );
+
+      const x = sortedPositionData.map((posTrace) => posTrace.x);
+      const y = sortedPositionData.map((posTrace) => posTrace.y);
+      const z = sortedPositionData.map((posTrace) => posTrace.z);
+
+      const playerTraces: Partial<PlotData> = {
+        x,
+        y,
+        z,
+        type: 'scatter3d',
+        mode: 'lines+markers',
+        name: playerName,
+        line: { color: playerName },
+        marker: { color: playerName, size: 6 },
+      };
+
+      plotData.push(playerTraces);
+      console.log(`Added trace for player: ${playerName}`, playerTraces);
+    }
+
+    // Special point
+    plotData.push({
+      x: [this.pointOfInterest.x],
+      y: [this.pointOfInterest.y],
+      z: [this.pointOfInterest.z],
+      mode: 'markers',
+      type: 'scatter3d',
+      name: 'Point of Interest',
+      marker: { color: 'red', symbol: 'x', size: 2 },
+    });
+
+    const layout: Partial<Plotly.Layout> = {
+      title: { text: 'PLAYER LOCATIONS<br>(not a substitute for log review)' },
+      scene: {
+        xaxis: {
+          title: { text: 'X Coordinates' },
+          // range: [this.pointOfInterest.x - radius, this.pointOfInterest.x + radius],
+        },
+        yaxis: {
+          title: { text: 'y Coordinates' },
+          // range: [this.pointOfInterest.y - radius, this.pointOfInterest.y + radius],
+        },
+        zaxis: {
+          title: { text: 'z Coordinates' },
+          // range: [this.pointOfInterest.z - radius, this.pointOfInterest.z + radius],
+        },
+      },
+      // shapes: [
+      //   {
+      //     type: 'circle',
+      //     xref: 'x',
+      //     yref: 'y',
+      //     x0: this.pointOfInterest.x - radius,
+      //     x1: this.pointOfInterest.x + radius,
+      //     y0: zSpecial - radius,
+      //     y1: zSpecial + radius,
+      //     line: { color: 'red', dash: 'dot' },
+      //   },
+      // ],
+    };
+
+    Plotly.newPlot(this.plotEl.nativeElement, plotData, layout);
+
+    this.plotReady.set(true);
+  }
 }

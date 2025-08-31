@@ -8,9 +8,13 @@
             <span>Date Range: {{ dateRange()?.lower | date}} - {{ dateRange()?.upper | date}}</span>
         </div>
         }
+
+        <button matButton (click)="generatePlot()">Regenerate Plot</button>
     </mat-card-header>
     <mat-card-content class="flex h-full overflow-auto">
-        <img class="flex h-full" src="sample-plot.png" alt="Log Plot" />
+
+        <div #plot></div>
+        <!-- <img class="flex h-full" src="sample-plot.png" alt="Log Plot" /> -->
 
     </mat-card-content>
 </mat-card>

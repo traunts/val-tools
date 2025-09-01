@@ -59,7 +59,7 @@ export class FileUploadService {
 
     // Extract all logs, send to log processing service
 
-    const logRegex = /(\w+):\s*\[([-\d.,\s]+)\]\s*\(([\d-]+\s[\d:.]+)\)/g;
+    const logRegex = /(.*):\s*\[([-\d.,\s]+)\]\s*\(([\d-]+\s[\d:.]+)\)/g;
     let traceMatch;
     while ((traceMatch = logRegex.exec(this.fileContent)) !== null) {
       const playerName = traceMatch[1];

@@ -58,10 +58,12 @@ export class LogPlotComponent {
     const plotData: Partial<PlotData>[] = [];
 
     for (const [playerName, data] of Object.entries(this.dataService.positionTraces())) {
+      console.log(`Processing player: ${playerName} with ${data.length} position entries`);
       if (
         this.playerService.disabledPlayers().length > 0 &&
         this.playerService.disabledPlayers().some((playerData) => playerData.name === playerName)
       ) {
+        console.log(`Skipping disabled player: ${playerName}`);
         continue;
       }
       const sortedPositionData = data.sort(
@@ -71,6 +73,7 @@ export class LogPlotComponent {
       const x = sortedPositionData.map((posTrace) => posTrace.x);
       const y = sortedPositionData.map((posTrace) => posTrace.y);
       const z = sortedPositionData.map((posTrace) => posTrace.z);
+      const colour = sortedPositionData.map((posTrace) => new Date(posTrace.timestamp).getTime());
 
       const playerTraces: Partial<PlotData> = {
         x,
@@ -79,8 +82,16 @@ export class LogPlotComponent {
         type: 'scatter3d',
         mode: 'lines+markers',
         name: playerName,
-        line: { color: playerName },
-        marker: { color: playerName, size: 6 },
+        colorscale: 'Viridis',
+        line: {
+          color: colour,
+          width: 2,
+        },
+        marker: {
+          color: playerName,
+          size: 3,
+          colorscale: 'Viridis',
+        },
       };
 
       plotData.push(playerTraces);
@@ -101,6 +112,18 @@ export class LogPlotComponent {
     const layout: Partial<Plotly.Layout> = {
       title: { text: 'PLAYER LOCATIONS<br>(not a substitute for log review)' },
       scene: {
+        camera: {
+          eye: {
+            x: 0.1,
+            y: 2.5,
+            z: 0.1,
+          },
+          up: {
+            x: 0,
+            y: 0,
+            z: 1,
+          },
+        },
         xaxis: {
           title: { text: 'X Coordinates' },
           // range: [this.pointOfInterest.x - radius, this.pointOfInterest.x + radius],
@@ -128,7 +151,7 @@ export class LogPlotComponent {
       // ],
     };
 
-    Plotly.newPlot(this.plotEl.nativeElement, plotData, layout);
+    Plotly.newPlot(this.plotEl.nativeElement, plotData, layout, { responsive: true });
 
     this.plotReady.set(true);
   }

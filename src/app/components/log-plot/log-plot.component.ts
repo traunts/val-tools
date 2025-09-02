@@ -24,8 +24,6 @@ export class LogPlotComponent {
     }
   });
 
-  pointOfInterest = { x: 1369, y: 31, z: 1260 }; // Example coordinates
-
   @ViewChild('plot', { static: true }) plotEl!: ElementRef;
 
   radius = computed(() => this.dataService.radius);
@@ -98,16 +96,20 @@ export class LogPlotComponent {
       console.log(`Added trace for player: ${playerName}`, playerTraces);
     }
 
-    // Special point
-    plotData.push({
-      x: [this.pointOfInterest.x],
-      y: [this.pointOfInterest.y],
-      z: [this.pointOfInterest.z],
-      mode: 'markers',
-      type: 'scatter3d',
-      name: 'Point of Interest',
-      marker: { color: 'red', symbol: 'x', size: 2 },
-    });
+    const observerCoordinates = this.dataService.observerCoordinates();
+
+    if (observerCoordinates) {
+      // Special point
+      plotData.push({
+        x: [observerCoordinates.x],
+        y: [observerCoordinates.y],
+        z: [observerCoordinates.z],
+        mode: 'markers',
+        type: 'scatter3d',
+        name: 'Point of Interest',
+        marker: { color: 'red', symbol: 'x', size: 2 },
+      });
+    }
 
     const layout: Partial<Plotly.Layout> = {
       title: { text: 'PLAYER LOCATIONS<br>(not a substitute for log review)' },

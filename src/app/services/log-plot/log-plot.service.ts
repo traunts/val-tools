@@ -9,6 +9,7 @@ export class LogPlotService {
 
   dateRange = signal<{ lower: string; upper: string } | null>(null);
   radius = signal<number | null>(null);
+  observerCoordinates = signal<{ x: number; y: number; z: number } | null>(null);
 
   positionTraces = signal<Record<string, PositionTrace[]>>({});
 
@@ -22,5 +23,9 @@ export class LogPlotService {
     currentTraces[playerName].push(trace);
 
     this.positionTraces.set({ ...currentTraces });
+  }
+
+  setObserverCoordinates(x: number, y: number, z: number) {
+    this.observerCoordinates.set({ x, y, z });
   }
 }

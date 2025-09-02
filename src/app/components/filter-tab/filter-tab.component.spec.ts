@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FilterTab } from './filter-tab';
+import { FilterTabComponent } from './filter-tab.component';
 
 describe('FilterTab', () => {
-  let component: FilterTab;
-  let fixture: ComponentFixture<FilterTab>;
+  let component: FilterTabComponent;
+  let fixture: ComponentFixture<FilterTabComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [FilterTab]
-    })
-    .compileComponents();
+      imports: [FilterTabComponent],
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(FilterTab);
+    fixture = TestBed.createComponent(FilterTabComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

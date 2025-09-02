@@ -4,7 +4,7 @@
 
         @if (dataService.dataLoaded()) {
         <div class="ml-auto flex flex-row items-center gap-4">
-            <span>Radius: {{ radius() }}</span>
+            <span>Radius: {{ radius()() }}</span>
             <span>Date Range: {{ dateRange()?.lower | date}} - {{ dateRange()?.upper | date}}</span>
         </div>
         }

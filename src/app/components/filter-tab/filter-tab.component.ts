@@ -27,10 +27,10 @@ import { PlayerData } from '../../models/player-data.interface';
     MatInputModule,
     ReactiveFormsModule,
   ],
-  templateUrl: './filter-tab.html',
-  styleUrl: './filter-tab.scss',
+  templateUrl: './filter-tab.component.html',
+  styleUrl: './filter-tab.component.scss',
 })
-export class FilterTab implements OnInit {
+export class FilterTabComponent implements OnInit {
   nameFilter = new FormControl<string | PlayerData>('');
 
   filteredPlayerList = signal<PlayerData[]>([]);

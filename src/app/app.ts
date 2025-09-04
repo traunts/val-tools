@@ -4,6 +4,7 @@ import { FileUploadComponent } from './components/file-upload/file-upload.compon
 import { MatCardModule } from '@angular/material/card';
 import { FilterTabComponent } from './components/filter-tab/filter-tab.component';
 import { CoordinateInputComponent } from './components/coordinate-input/coordinate-input.component';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-root',
@@ -13,6 +14,7 @@ import { CoordinateInputComponent } from './components/coordinate-input/coordina
     MatCardModule,
     FilterTabComponent,
     CoordinateInputComponent,
+    MatButtonModule,
   ],
   templateUrl: './app.html',
   styleUrl: './app.scss',

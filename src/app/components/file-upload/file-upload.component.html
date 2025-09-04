@@ -1,19 +1,31 @@
-<mat-card>
-    <mat-card-header>Upload Log File</mat-card-header>
+<mat-card class="w-full">
+    <mat-card-header>
+        <mat-card-title>Upload Log File</mat-card-title>
+    </mat-card-header>
+
     <mat-card-content>
-        <div class="flex flex-row items-center gap-4">
-            <input type="file" id="file-upload" (change)="onFileSelected($event)" hidden />
-            <label for="file-upload" class="file-upload-label cursor-pointer">
-                <span class="file-upload-icon">📁</span>
-                <span class="file-upload-text">Choose File</span>
-            </label>
+        <div #dropzone class="dropzone" tabindex="0" role="button"
+            aria-label="Drop log file here or press Enter to choose" (click)="fileInput.click()"
+            (keydown.enter)="fileInput.click()" (keydown.space)="$event.preventDefault(); fileInput.click()"
+            (dragover)="onDragOver($event)" (dragenter)="onDragEnter($event)" (dragleave)="onDragLeave($event)"
+            (drop)="onDrop($event)">
+
+            <input #fileInput type="file" accept=".log,.txt" (change)="onChange($event)" hidden />
+
+            <div class="dropzone-inner">
+                <div class="icon">📁</div>
+                <div class="text">
+                    <div class="headline">Drop log file here or click to select</div>
+                    <div class="sub">Supported: .log, .txt — single file</div>
+                </div>
+            </div>
+
             @if (fileName) {
-            <span class="file-upload-filename">{{ fileName }}</span>
+            <div class="filename">
+                Selected: <strong>{{ fileName }}</strong>
+            </div>
             }
+
         </div>
     </mat-card-content>
 </mat-card>
-<!-- <input type="file" id="file-upload" (onchange)="onFileSelected($event)" />
-<label for="file-upload" class="file-upload-label">
-    <span class="file-upload-icon">📁</span>
-    <span class="file-upload-text">Upload Log File</span> -->

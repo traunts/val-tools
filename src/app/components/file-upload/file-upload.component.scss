@@ -1,0 +1,68 @@
+
+.dropzone {
+  width: 100%;
+  min-height: 160px;
+  border: 2px dashed rgba(0, 0, 0, 0.12);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 18px;
+  transition: border-color 160ms ease, background-color 160ms ease, box-shadow 160ms ease;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  cursor: pointer;
+  outline: none;
+  position: relative;
+}
+
+.dropzone:focus {
+  box-shadow: 0 0 0 4px rgba(25, 118, 210, 0.12);
+}
+
+.dropzone.dragging {
+  border-color: #1976d2; /* Material primary */
+  background-color: rgba(25, 118, 210, 0.03);
+}
+
+.dropzone-inner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-align: center;
+  pointer-events: none; /* allow click on parent */
+}
+
+.icon {
+  font-size: 38px;
+}
+
+.headline {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.sub {
+  font-size: 0.85rem;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.filename {
+  position: absolute;
+  bottom: 8px;
+  left: 12px;
+  font-size: 0.9rem;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+/* responsive */
+@media (max-width: 640px) {
+  .dropzone {
+    min-height: 140px;
+    padding: 14px;
+  }
+  .icon {
+    font-size: 34px;
+  }
+}

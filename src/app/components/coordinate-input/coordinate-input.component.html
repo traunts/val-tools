@@ -4,17 +4,20 @@
         <form [formGroup]="observerCoordinates" class="flex flex-row gap-2">
             <mat-form-field appearance="fill">
                 <mat-label>Enter Coordinates</mat-label>
-                <input matInput formControlName="obsX" placeholder="x-coord" type="number" required>
+                <input matInput formControlName="obsX" placeholder="x-coord" type="number" required
+                    (paste)="pasteCoordinates($event)">
                 <mat-hint>x-coord</mat-hint>
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Enter Coordinates</mat-label>
-                <input matInput formControlName="obsY" placeholder="y-coord" type="number" required>
+                <input matInput formControlName="obsY" placeholder="y-coord" type="number" required
+                    (paste)="pasteCoordinates($event)">
                 <mat-hint>y-coord</mat-hint>
             </mat-form-field>
             <mat-form-field appearance="fill">
                 <mat-label>Enter Coordinates</mat-label>
-                <input matInput formControlName="obsZ" placeholder="z-coord" type="number" required>
+                <input matInput formControlName="obsZ" placeholder="z-coord" type="number" required
+                    (paste)="pasteCoordinates($event)">
                 <mat-hint>z-coord</mat-hint>
             </mat-form-field>
         </form>

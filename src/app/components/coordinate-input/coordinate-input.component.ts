@@ -29,4 +29,24 @@ export class CoordinateInputComponent implements OnInit {
       }
     });
   }
+
+  pasteCoordinates(event: ClipboardEvent) {
+    event.preventDefault();
+    const clipboardData = event.clipboardData;
+    if (clipboardData) {
+      const pastedText = clipboardData.getData('text');
+      console.log('Pasted text:', pastedText);
+      const coords = pastedText
+        .split(/[\s,]+/)
+        .map((coord) => parseFloat(coord.trim()))
+        .filter((coord) => !isNaN(coord));
+      if (coords.length === 3 && coords.every((coord) => !isNaN(coord))) {
+        this.observerCoordinates.setValue({
+          obsX: coords[0],
+          obsY: coords[1],
+          obsZ: coords[2],
+        });
+      }
+    }
+  }
 }

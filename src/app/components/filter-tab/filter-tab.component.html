@@ -26,7 +26,7 @@
 
                 </mat-card-content>
                 <mat-card-actions align="end">
-                    <button matIconButton (click)="toggleAllPlayers(true)">
+                    <button title="Enable all players" matIconButton (click)="toggleAllPlayers(true)">
                         <mat-icon>keyboard_tab</mat-icon>
                     </button>
                 </mat-card-actions>
@@ -40,7 +40,7 @@
                         [playerList]="playerService.enabledPlayers()"></app-player-list>
                 </mat-card-content>
                 <mat-card-actions align="start">
-                    <button matIconButton (click)="toggleAllPlayers(false)">
+                    <button title="Disable all players" matIconButton (click)="toggleAllPlayers(false)">
                         <mat-icon class="rotate-180">keyboard_tab</mat-icon>
                     </button>
                 </mat-card-actions>

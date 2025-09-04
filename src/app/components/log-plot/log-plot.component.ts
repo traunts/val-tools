@@ -107,7 +107,7 @@ export class LogPlotComponent {
         mode: 'markers',
         type: 'scatter3d',
         name: 'Point of Interest',
-        marker: { color: 'red', symbol: 'x', size: 2 },
+        marker: { color: 'red', symbol: 'x', size: 3 },
       });
     }
 
@@ -122,21 +122,30 @@ export class LogPlotComponent {
           },
           up: {
             x: 0,
-            y: 0,
-            z: 1,
+            y: 1,
+            z: 0,
           },
         },
         xaxis: {
           title: { text: 'X Coordinates' },
-          // range: [this.pointOfInterest.x - radius, this.pointOfInterest.x + radius],
+          ...(observerCoordinates
+            ? { range: [observerCoordinates.x - radius, observerCoordinates.x + radius] }
+            : {}),
         },
         yaxis: {
-          title: { text: 'y Coordinates' },
-          // range: [this.pointOfInterest.y - radius, this.pointOfInterest.y + radius],
+          title: { text: 'Y Coordinates' },
+          // autorangeoptions: {
+          //   include: 0,
+          // },
+          ...(observerCoordinates
+            ? { range: [observerCoordinates.y - radius, observerCoordinates.y + radius] }
+            : {}),
         },
         zaxis: {
-          title: { text: 'z Coordinates' },
-          // range: [this.pointOfInterest.z - radius, this.pointOfInterest.z + radius],
+          title: { text: 'Z Coordinates' },
+          ...(observerCoordinates
+            ? { range: [observerCoordinates.z - radius, observerCoordinates.z + radius] }
+            : {}),
         },
       },
       // shapes: [

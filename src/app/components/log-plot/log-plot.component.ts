@@ -5,6 +5,7 @@ import { DatePipe } from '@angular/common';
 import Plotly, { PlotData } from 'plotly.js-dist-min';
 import { PlayerListService } from '../../services/player-list/player-list.service';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-log-plot',
   imports: [MatCard, MatCardContent, MatCardHeader, DatePipe, MatButtonModule],
@@ -14,6 +15,8 @@ import { MatButtonModule } from '@angular/material/button';
 export class LogPlotComponent {
   dataService = inject(LogPlotService);
   playerService = inject(PlayerListService);
+
+  snackBar = inject(MatSnackBar);
 
   plotReady = signal(false);
 
@@ -29,7 +32,7 @@ export class LogPlotComponent {
   radius = computed(() => this.dataService.radius);
   dateRange = computed(() => this.dataService.dateRange());
 
-  generatePlot(): void {
+  async generatePlot(): Promise<void> {
     if (!this.dataService.dataLoaded()) {
       console.warn('Data not loaded yet. Cannot generate plot.');
       return;
@@ -162,7 +165,27 @@ export class LogPlotComponent {
       // ],
     };
 
-    Plotly.newPlot(this.plotEl.nativeElement, plotData, layout, { responsive: true });
+    const plot = await Plotly.newPlot(this.plotEl.nativeElement, plotData, layout, {
+      responsive: true,
+    });
+
+    const copyClickedPointToClipboard = (event: Plotly.PlotMouseEvent) => {
+      if (event.points.length) {
+        const point = event.points[0];
+
+        const xStr = Number(point.data.x[point.pointNumber]).toFixed(0);
+        const yStr = Number(point.data.y[point.pointNumber]).toFixed(0);
+        const zStr = Number(point.data.z[point.pointNumber]).toFixed(0);
+        const formattedCoords = `${xStr} ${yStr} ${zStr}`;
+
+        console.log('Clicked point details:', `${point.data.name} [${formattedCoords}]`);
+        navigator.clipboard.writeText(formattedCoords).then(() => {
+          this.snackBar.open('Point details copied to clipboard!', 'Done', { duration: 2000 });
+        });
+      }
+    };
+
+    plot.on('plotly_click', copyClickedPointToClipboard);
 
     this.plotReady.set(true);
   }
